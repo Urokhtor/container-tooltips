@@ -16,18 +16,11 @@ import net.minecraft.util.math.BlockPos
 class InventoryRequestHandler {
 
     fun createResponse(player: ServerPlayerEntity, blockPosition: BlockPos): NbtCompound? {
-        val blockEntity: BlockEntity? = player.serverWorld.getBlockEntity(blockPosition)
-
-        return if (blockEntity != null && blockEntity is LootableContainerBlockEntity) {
-            if (blockEntity is ChestBlockEntity) {
-                readChestInventory(player, blockPosition)
-            } else {
-                readGenericInventory(blockEntity)
-            }
-        } else if (blockEntity is EnderChestBlockEntity) {
-            readEnderChestInventory(player)
-        } else {
-            null
+        return when (val blockEntity: BlockEntity? = player.serverWorld.getBlockEntity(blockPosition)) {
+            is ChestBlockEntity -> readChestInventory(player, blockPosition)
+            is LootableContainerBlockEntity -> readGenericInventory(blockEntity)
+            is EnderChestBlockEntity -> readEnderChestInventory(player)
+            else -> null
         }
     }
 
