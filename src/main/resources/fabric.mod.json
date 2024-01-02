@@ -17,13 +17,13 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "io.urokhtor.minecraft.Containertooltips",
+				"value": "io.urokhtor.minecraft.ContainerTooltips",
 				"adapter": "kotlin"
 			}
 		],
 		"client": [
 			{
-				"value": "io.urokhtor.minecraft.ContainertooltipsClient",
+				"value": "io.urokhtor.minecraft.ContainerTooltipsClient",
 				"adapter": "kotlin"
 			}
 		]
