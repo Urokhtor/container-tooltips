@@ -1,15 +1,14 @@
 package io.urokhtor.minecraft
 
+import io.urokhtor.minecraft.Requests.INVENTORY_REQUEST
+import io.urokhtor.minecraft.Requests.INVENTORY_RESPONSE
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
-import net.minecraft.util.Identifier
 
 object Containertooltips : ModInitializer {
 
 	private val inventoryRequestHandler = InventoryRequestHandler()
-	private val INVENTORY_REQUEST: Identifier = Identifier("chest-tooltips", "inventory-request")
-	private val INVENTORY_RESPONSE: Identifier = Identifier("chest-tooltips", "inventory-response")
 
 	override fun onInitialize() {
 		ServerPlayNetworking.registerGlobalReceiver(INVENTORY_REQUEST) { server, player, _, buffer, responseSender ->
