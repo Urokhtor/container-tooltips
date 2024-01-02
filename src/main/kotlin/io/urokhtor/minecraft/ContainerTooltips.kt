@@ -6,7 +6,7 @@ import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 
-object Containertooltips : ModInitializer {
+object ContainerTooltips : ModInitializer {
 
 	private val inventoryRequestHandler = InventoryRequestHandler()
 

@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 
-object ContainertooltipsClient : ClientModInitializer {
+object ContainerTooltipsClient : ClientModInitializer {
 
 	private val inventoryResponseHandler = InventoryResponseHandler()
 	private val inventoryTooltip = InventoryTooltip()
