@@ -18,7 +18,7 @@ class InventoryTooltip {
             .filter { it.item !is AirBlockItem }
 
         if (inventoryWithoutAir.isEmpty()) {
-            val emptyContainerMessage = Text.of("Empty").asOrderedText()
+            val emptyContainerMessage = Text.translatable("container.empty").asOrderedText()
             drawContext.drawTooltip(
                 client.textRenderer,
                 listOf(emptyContainerMessage),
