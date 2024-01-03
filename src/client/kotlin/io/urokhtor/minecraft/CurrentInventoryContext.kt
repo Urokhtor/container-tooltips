@@ -1,16 +1,17 @@
 package io.urokhtor.minecraft
 
 import net.minecraft.item.ItemStack
+import net.minecraft.util.collection.DefaultedList
 
 object CurrentInventoryContext {
 
-    private var inventory: List<ItemStack>? = null
+    private var inventory: DefaultedList<ItemStack>? = null
 
-    fun get(): List<ItemStack>? {
+    fun get(): DefaultedList<ItemStack>? {
         return inventory
     }
 
-    fun set(inventory: List<ItemStack>) {
+    fun set(inventory: DefaultedList<ItemStack>) {
         this.inventory = inventory
     }
 

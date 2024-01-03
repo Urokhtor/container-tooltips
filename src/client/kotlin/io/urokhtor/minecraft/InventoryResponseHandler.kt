@@ -7,9 +7,9 @@ import net.minecraft.util.collection.DefaultedList
 
 class InventoryResponseHandler {
 
-    fun parseResponse(nbtInventory: NbtCompound): List<ItemStack> {
+    fun parseResponse(nbtInventory: NbtCompound): DefaultedList<ItemStack> {
         val maxSize = nbtInventory.getInt("MaxSize")
-        val inventory: MutableList<ItemStack> = DefaultedList.ofSize(maxSize, ItemStack.EMPTY)
+        val inventory: DefaultedList<ItemStack> = DefaultedList.ofSize(maxSize, ItemStack.EMPTY)
         val items = nbtInventory.get("Items")
         if (items is NbtList) {
             items.map {
