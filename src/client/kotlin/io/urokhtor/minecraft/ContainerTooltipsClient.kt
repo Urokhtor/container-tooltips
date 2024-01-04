@@ -22,7 +22,8 @@ object ContainerTooltipsClient : ClientModInitializer {
 
 		HudRenderCallback.EVENT.register { guiGraphics, _ ->
 			CurrentInventoryContext.get()?.let {
-				inventoryTooltip.render(MinecraftClient.getInstance(), guiGraphics, it)
+				val client = MinecraftClient.getInstance()
+				inventoryTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
 			}
 		}
 	}
