@@ -60,7 +60,7 @@ class InventoryRequestHandler {
         return nbtCompound
     }
 
-    private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): NbtCompound? {
+    private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): NbtCompound {
         val nbtCompound = blockEntity.createNbt()
         nbtCompound.put(MAX_SIZE, NbtInt.of(blockEntity.size()))
         nbtCompound.put(NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
