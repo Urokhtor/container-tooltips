@@ -50,7 +50,7 @@ class InventoryRequestHandler {
             true
         )
 
-        val defaultedList = DefaultedList.ofSize(inventory!!.size(), ItemStack.EMPTY);
+        val defaultedList = DefaultedList.ofSize(inventory!!.size(), ItemStack.EMPTY)
         IntRange(0, inventory.size() - 1).map { slot ->
             defaultedList.set(slot, inventory.getStack(slot))
         }
