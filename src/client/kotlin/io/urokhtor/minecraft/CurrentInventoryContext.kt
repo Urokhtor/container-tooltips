@@ -3,19 +3,21 @@ package io.urokhtor.minecraft
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
 
+data class Container(val name: String, val inventory: DefaultedList<ItemStack>)
+
 object CurrentInventoryContext {
 
-    private var inventory: DefaultedList<ItemStack>? = null
+    private var container: Container? = null
 
-    fun get(): DefaultedList<ItemStack>? {
-        return inventory
+    fun get(): Container? {
+        return container
     }
 
-    fun set(inventory: DefaultedList<ItemStack>) {
-        this.inventory = inventory
+    fun set(container: Container) {
+        this.container = container
     }
 
     fun reset() {
-        this.inventory = null
+        this.container = null
     }
 }
