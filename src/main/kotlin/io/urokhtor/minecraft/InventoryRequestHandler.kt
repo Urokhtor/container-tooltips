@@ -20,7 +20,7 @@ class InventoryRequestHandler {
 
     fun createResponse(player: ServerPlayerEntity, blockPosition: BlockPos): NbtCompound? {
         return when (val blockEntity: BlockEntity? = player.serverWorld.getBlockEntity(blockPosition)) {
-            is ChestBlockEntity -> readChestInventory(player, blockPosition)
+            is ChestBlockEntity -> readChestInventory(player, blockEntity)
             is LootableContainerBlockEntity -> readGenericInventory(blockEntity)
             is EnderChestBlockEntity -> readEnderChestInventory(player)
             else -> null
@@ -34,14 +34,14 @@ class InventoryRequestHandler {
      */
     private fun readChestInventory(
         player: ServerPlayerEntity,
-        blockPosition: BlockPos
+        blockEntity: ChestBlockEntity
     ): NbtCompound {
-        val blockState = player.serverWorld.getBlockState(blockPosition)
+        val blockState = blockEntity.cachedState
         val inventory = ChestBlock.getInventory(
             blockState.block as ChestBlock,
             blockState,
             player.serverWorld,
-            blockPosition,
+            blockEntity.pos,
             true
         )
 
