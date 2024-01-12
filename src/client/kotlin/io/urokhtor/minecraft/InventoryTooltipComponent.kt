@@ -23,7 +23,11 @@ class InventoryTooltipComponent(private val container: Container) : TooltipCompo
     }
 
     override fun getHeight(): Int {
-        return (container.inventory.size / 9.0).roundToInt() * ITEM_SIZE_Y + 2
+        return rowCount() * ITEM_SIZE_Y + 2
+    }
+
+    private fun rowCount(): Int {
+        return if (container.inventory.size < 9) 1 else (container.inventory.size / 9.0).roundToInt()
     }
 
     fun getItemsOnOneRow() = if (container.inventory.size < 9) container.inventory.size else MAX_ROW_LENGTH
