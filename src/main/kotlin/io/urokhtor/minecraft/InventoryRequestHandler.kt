@@ -9,12 +9,15 @@ import net.minecraft.inventory.Inventories
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtInt
+import net.minecraft.nbt.NbtString
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.text.Text
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 
 private const val MAX_SIZE = "MaxSize"
 private const val ITEMS = "Items"
+private const val NAME = "Name"
 
 class InventoryRequestHandler {
 
@@ -53,12 +56,14 @@ class InventoryRequestHandler {
         val nbtCompound = NbtCompound()
         nbtCompound.put(MAX_SIZE, NbtInt.of(inventory.size()))
         Inventories.writeNbt(nbtCompound, defaultedList)
+        nbtCompound.put(NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
         return nbtCompound
     }
 
     private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): NbtCompound? {
         val nbtCompound = blockEntity.createNbt()
         nbtCompound.put(MAX_SIZE, NbtInt.of(blockEntity.size()))
+        nbtCompound.put(NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
         return nbtCompound
     }
 
@@ -67,6 +72,7 @@ class InventoryRequestHandler {
         val nbtCompound = NbtCompound()
         nbtCompound.put(ITEMS, nbtList)
         nbtCompound.put(MAX_SIZE, NbtInt.of(player.enderChestInventory.size()))
+        nbtCompound.put(NAME, NbtString.of(Text.translatable("container.enderchest").asTruncatedString(32)))
         return nbtCompound
     }
 }
