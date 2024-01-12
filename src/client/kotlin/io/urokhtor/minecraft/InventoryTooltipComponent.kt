@@ -18,19 +18,11 @@ private val SLOT_TEXTURE = Identifier("container/bundle/slot")
 class InventoryTooltipComponent(private val container: Container) : TooltipComponent {
 
     override fun getWidth(textRenderer: TextRenderer?): Int {
-        return getColumnsWidth()
-    }
-
-    override fun getHeight(): Int {
-        return getRowsHeight() + 4
-    }
-
-    private fun getColumnsWidth(): Int {
         val itemsOnOneRow = getItemsOnOneRow()
         return itemsOnOneRow * ITEM_SIZE_X + 2
     }
 
-    private fun getRowsHeight(): Int {
+    override fun getHeight(): Int {
         return (container.inventory.size / 9.0).roundToInt() * ITEM_SIZE_Y + 2
     }
 
@@ -41,8 +33,8 @@ class InventoryTooltipComponent(private val container: Container) : TooltipCompo
             drawContext,
             x,
             y,
-            getColumnsWidth(),
-            getRowsHeight() + textRenderer.fontHeight + PADDING,
+            getWidth(textRenderer),
+            height + textRenderer.fontHeight + PADDING,
             0
         )
 
@@ -54,8 +46,8 @@ class InventoryTooltipComponent(private val container: Container) : TooltipCompo
             BACKGROUND_TEXTURE,
             x,
             backgroundTextureYStart,
-            this.getColumnsWidth(),
-            this.getRowsHeight()
+            this.getWidth(textRenderer),
+            this.height
         )
 
         container.inventory.chunked(getItemsOnOneRow())
