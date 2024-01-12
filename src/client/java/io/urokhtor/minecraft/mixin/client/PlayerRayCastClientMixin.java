@@ -4,6 +4,7 @@ import io.urokhtor.minecraft.CurrentInventoryContext;
 import io.urokhtor.minecraft.Requests;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.EnderChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -41,7 +42,7 @@ public abstract class PlayerRayCastClientMixin {
 			lastPositionStaredAt = blockPosition;
 			BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPosition);
 
-			if (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity) {
+			if (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity || blockEntity instanceof AbstractFurnaceBlockEntity) {
 				PacketByteBuf buffer = PacketByteBufs.create();
 				buffer.writeBlockPos(blockPosition);
 				ClientPlayNetworking.send(Requests.INSTANCE.getINVENTORY_REQUEST(), buffer);

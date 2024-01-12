@@ -1,6 +1,7 @@
 package io.urokhtor.minecraft
 
 import net.minecraft.block.ChestBlock
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.ChestBlockEntity
 import net.minecraft.block.entity.EnderChestBlockEntity
@@ -26,6 +27,7 @@ class InventoryRequestHandler {
             is ChestBlockEntity -> readChestInventory(player, blockEntity)
             is LootableContainerBlockEntity -> readGenericInventory(blockEntity)
             is EnderChestBlockEntity -> readEnderChestInventory(player)
+            is AbstractFurnaceBlockEntity -> readFurnaceInventory(blockEntity)
             else -> null
         }
     }
@@ -73,6 +75,13 @@ class InventoryRequestHandler {
         nbtCompound.put(ITEMS, nbtList)
         nbtCompound.put(MAX_SIZE, NbtInt.of(player.enderChestInventory.size()))
         nbtCompound.put(NAME, NbtString.of(Text.translatable("container.enderchest").asTruncatedString(32)))
+        return nbtCompound
+    }
+
+    private fun readFurnaceInventory(blockEntity: AbstractFurnaceBlockEntity): NbtCompound {
+        val nbtCompound = blockEntity.createNbt()
+        nbtCompound.put(MAX_SIZE, NbtInt.of(blockEntity.size()))
+        nbtCompound.put(NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
         return nbtCompound
     }
 }
