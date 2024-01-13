@@ -1,7 +1,12 @@
 # Change Log
 
-## 1.0.2+1.20.4
+## 1.1.0+1.20.4
 
+- Refresh contents of the looked at container once a second.
+
+## 1.1.0+1.20.1
+
+- Port the mod to Minecraft 1.20.1
 - Refresh contents of the looked at container once a second.
 
 ## 1.0.1+1.20.4
