@@ -11,9 +11,9 @@ import kotlin.math.roundToInt
 private const val MAX_ROW_LENGTH: Int = 9
 const val ITEM_SIZE_X: Int = 18
 private const val ITEM_SIZE_Y: Int = 20
+private const val TEXTURE_WIDTH: Int = 128
 private const val PADDING: Int = 3
-private val BACKGROUND_TEXTURE = Identifier("container/bundle/background")
-private val SLOT_TEXTURE = Identifier("container/bundle/slot")
+private val BACKGROUND_TEXTURE = Identifier("textures/gui/container/bundle.png")
 
 class InventoryTooltipComponent(private val container: Container) : TooltipComponent {
 
@@ -46,20 +46,23 @@ class InventoryTooltipComponent(private val container: Container) : TooltipCompo
 
         val backgroundTextureYStart = y + textRenderer.fontHeight + PADDING
 
-        drawContext.drawGuiTexture(
-            BACKGROUND_TEXTURE,
-            x,
-            backgroundTextureYStart,
-            this.getWidth(textRenderer),
-            this.height
-        )
-
         container.inventory.chunked(getItemsOnOneRow())
             .forEachIndexed { stackIndex, itemStacks ->
                 itemStacks.forEachIndexed { itemIndex, itemStack ->
                     val xOffset = x + itemIndex * ITEM_SIZE_X + 1
                     val yOffset = backgroundTextureYStart + stackIndex * ITEM_SIZE_Y + 1
-                    drawContext.drawGuiTexture(SLOT_TEXTURE, xOffset, yOffset, 0, ITEM_SIZE_X, ITEM_SIZE_Y)
+                    drawContext.drawTexture(
+                        BACKGROUND_TEXTURE,
+                        xOffset,
+                        yOffset,
+                        0,
+                        0f,
+                        0f,
+                        ITEM_SIZE_X,
+                        ITEM_SIZE_Y,
+                        TEXTURE_WIDTH,
+                        TEXTURE_WIDTH
+                    )
                     drawContext.drawItem(itemStack, xOffset + 1, yOffset + 1)
                     drawContext.drawItemInSlot(textRenderer, itemStack, xOffset + 1, yOffset + 1)
                 }
