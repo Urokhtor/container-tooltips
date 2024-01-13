@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.time.Instant;
+
 @Mixin(Entity.class)
 public abstract class PlayerRayCastClientMixin {
 	@Shadow
@@ -29,13 +31,18 @@ public abstract class PlayerRayCastClientMixin {
 	@Unique
 	private BlockPos lastPositionStaredAt;
 
+	@Unique
+	private Instant lastPollInstant = Instant.now();
+
 	@Inject(at = @At("RETURN"), method = "raycast")
 	private void onRayCast(CallbackInfoReturnable<HitResult> callbackInfoReturnable) {
 		if (callbackInfoReturnable.getReturnValue() instanceof BlockHitResult hitResult) {
 			BlockPos blockPosition = hitResult.getBlockPos();
+			Instant currentInstant = Instant.now();
 
-			// Don't send network request if we have already requested container's contents.
-			if (blockPosition.equals(lastPositionStaredAt)) {
+			// Don't send network request if we have already requested container's contents, and it has been under 1
+			// since the last time we polled the contents.
+			if (blockPosition.equals(lastPositionStaredAt) && currentInstant.minusSeconds(1).isBefore(lastPollInstant)) {
 				return;
 			}
 
@@ -43,6 +50,7 @@ public abstract class PlayerRayCastClientMixin {
 			BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPosition);
 
 			if (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity || blockEntity instanceof AbstractFurnaceBlockEntity) {
+				lastPollInstant = Instant.now();
 				PacketByteBuf buffer = PacketByteBufs.create();
 				buffer.writeBlockPos(blockPosition);
 				ClientPlayNetworking.send(Requests.INSTANCE.getINVENTORY_REQUEST(), buffer);

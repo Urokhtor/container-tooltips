@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.2+1.20.4
+
+- Refresh contents of the looked at container once a second.
+
 ## 1.0.1+1.20.4
 
 - Show name of the container in a tooltip.
