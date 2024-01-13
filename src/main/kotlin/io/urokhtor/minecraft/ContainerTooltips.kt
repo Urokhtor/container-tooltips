@@ -12,8 +12,9 @@ object ContainerTooltips : ModInitializer {
 
 	override fun onInitialize() {
 		ServerPlayNetworking.registerGlobalReceiver(INVENTORY_REQUEST) { server, player, _, buffer, responseSender ->
+			val blockPosition = buffer.readBlockPos()
 			server.execute {
-				inventoryRequestHandler.createResponse(player, buffer.readBlockPos())?.let {
+				inventoryRequestHandler.createResponse(player, blockPosition)?.let {
 					val writeBuffer = PacketByteBufs.create()
 					writeBuffer.writeNbt(it)
 					responseSender.sendPacket(INVENTORY_RESPONSE, writeBuffer)
