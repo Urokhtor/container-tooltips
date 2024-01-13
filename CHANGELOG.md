@@ -3,6 +3,7 @@
 ## 1.0.2+1.20.4
 
 - Refresh contents of the looked at container once a second.
+- Mark Minecraft 1.20.3 also supported.
 
 ## 1.0.1+1.20.4
 
