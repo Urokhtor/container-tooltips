@@ -2,14 +2,15 @@
 	"schemaVersion": 1,
 	"id": "container-tooltips",
 	"version": "${version}",
-	"name": "container-tooltips",
+	"name": "Container Tooltips",
 	"description": "Tooltips for Minecraft containers that show their contents.",
 	"authors": [
 		"Urokhtor"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/Urokhtor/container-tooltips",
+		"sources": "https://github.com/Urokhtor/container-tooltips",
+		"issues": "https://github.com/Urokhtor/container-tooltips/issues"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/container-tooltips/icon.png",
@@ -26,6 +27,9 @@
 				"value": "io.urokhtor.minecraft.ContainerTooltipsClient",
 				"adapter": "kotlin"
 			}
+		],
+		"modmenu": [
+			"io.urokhtor.minecraft.configuration.ModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -40,9 +44,11 @@
 		"minecraft": "1.20.1",
 		"java": ">=17",
 		"fabric-api": "*",
-		"fabric-language-kotlin": ">=1.9.22"
+		"fabric-language-kotlin": ">=1.9.22",
+		"cloth-config": ">=11.0.0"
 	},
 	"suggests": {
-		"shulkerboxtooltip": "*"
+		"shulkerboxtooltip": "*",
+		"modmenu": "*"
 	}
 }
