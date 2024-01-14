@@ -24,6 +24,10 @@ object ContainerTooltipsClient : ClientModInitializer {
 
 		val configHolder = AutoConfig.getConfigHolder(Configuration::class.java)
 		configuration = configHolder.config
+		configHolder.registerSaveListener { _, config ->
+			configuration = config
+			ActionResult.PASS
+		}
 
 		ClientPlayNetworking.registerGlobalReceiver(INVENTORY_RESPONSE) { _, _, buffer, _ ->
 			run {
