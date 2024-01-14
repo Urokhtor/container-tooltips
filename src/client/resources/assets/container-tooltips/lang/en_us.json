@@ -1,3 +1,5 @@
 {
-  "container.empty": "Empty"
+  "container.empty": "Empty",
+  "text.autoconfig.container-tooltips.title": "Container Tooltips",
+  "text.autoconfig.container-tooltips.option.showAutomatically": "Show the tooltip automatically"
 }
