@@ -1,11 +1,11 @@
-package io.urokhtor.minecraft
+package io.urokhtor.minecraft.containertooltips
 
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
 
 data class Container(val name: String, val inventory: DefaultedList<ItemStack>)
 
-object CurrentInventoryContext {
+object CurrentContainerContext {
 
     private var container: Container? = null
 

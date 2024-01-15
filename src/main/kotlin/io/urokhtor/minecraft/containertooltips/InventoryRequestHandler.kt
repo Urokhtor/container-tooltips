@@ -1,4 +1,4 @@
-package io.urokhtor.minecraft
+package io.urokhtor.minecraft.containertooltips
 
 import net.minecraft.block.ChestBlock
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity
@@ -15,10 +15,6 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
-
-private const val MAX_SIZE = "MaxSize"
-private const val ITEMS = "Items"
-private const val NAME = "Name"
 
 class InventoryRequestHandler {
 
@@ -56,32 +52,32 @@ class InventoryRequestHandler {
         }
 
         val nbtCompound = NbtCompound()
-        nbtCompound.put(MAX_SIZE, NbtInt.of(inventory.size()))
+        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(inventory.size()))
         Inventories.writeNbt(nbtCompound, defaultedList)
-        nbtCompound.put(NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
+        nbtCompound.put(Responses.NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
         return nbtCompound
     }
 
     private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): NbtCompound {
         val nbtCompound = blockEntity.createNbt()
-        nbtCompound.put(MAX_SIZE, NbtInt.of(blockEntity.size()))
-        nbtCompound.put(NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
+        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(blockEntity.size()))
+        nbtCompound.put(Responses.NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
         return nbtCompound
     }
 
     private fun readEnderChestInventory(player: ServerPlayerEntity): NbtCompound {
         val nbtList = player.enderChestInventory.toNbtList()
         val nbtCompound = NbtCompound()
-        nbtCompound.put(ITEMS, nbtList)
-        nbtCompound.put(MAX_SIZE, NbtInt.of(player.enderChestInventory.size()))
-        nbtCompound.put(NAME, NbtString.of(Text.translatable("container.enderchest").asTruncatedString(32)))
+        nbtCompound.put(Responses.ITEMS, nbtList)
+        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(player.enderChestInventory.size()))
+        nbtCompound.put(Responses.NAME, NbtString.of(Text.translatable("container.enderchest").asTruncatedString(32)))
         return nbtCompound
     }
 
     private fun readFurnaceInventory(blockEntity: AbstractFurnaceBlockEntity): NbtCompound {
         val nbtCompound = blockEntity.createNbt()
-        nbtCompound.put(MAX_SIZE, NbtInt.of(blockEntity.size()))
-        nbtCompound.put(NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
+        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(blockEntity.size()))
+        nbtCompound.put(Responses.NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
         return nbtCompound
     }
 }

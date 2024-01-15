@@ -1,4 +1,4 @@
-package io.urokhtor.minecraft.configuration;
+package io.urokhtor.minecraft.containertooltips.configuration;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

@@ -1,7 +1,7 @@
-package io.urokhtor.minecraft
+package io.urokhtor.minecraft.containertooltips
 
-import io.urokhtor.minecraft.Requests.INVENTORY_REQUEST
-import io.urokhtor.minecraft.Requests.INVENTORY_RESPONSE
+import io.urokhtor.minecraft.containertooltips.Requests.INVENTORY_REQUEST
+import io.urokhtor.minecraft.containertooltips.Requests.INVENTORY_RESPONSE
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking

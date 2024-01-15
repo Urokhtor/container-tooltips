@@ -1,4 +1,4 @@
-package io.urokhtor.minecraft
+package io.urokhtor.minecraft.containertooltips
 
 import net.minecraft.util.Identifier
 
