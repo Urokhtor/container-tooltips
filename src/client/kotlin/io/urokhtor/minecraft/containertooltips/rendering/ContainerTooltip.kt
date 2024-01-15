@@ -23,20 +23,23 @@ class ContainerTooltip {
 
         val backgroundTextureYStart = Y_START + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING
 
-        drawContext.drawGuiTexture(
-            BACKGROUND_TEXTURE,
-            x,
-            backgroundTextureYStart,
-            this.getWidth(container),
-            this.getHeight(container)
-        )
-
         container.inventory.chunked(getItemsOnOneRow(container))
             .forEachIndexed { stackIndex, itemStacks ->
                 itemStacks.forEachIndexed { itemIndex, itemStack ->
                     val xOffset = x + itemIndex * ITEM_SIZE_X + 1
                     val yOffset = backgroundTextureYStart + stackIndex * ITEM_SIZE_Y + 1
-                    drawContext.drawGuiTexture(SLOT_TEXTURE, xOffset, yOffset, 0, ITEM_SIZE_X, ITEM_SIZE_Y)
+                    drawContext.drawTexture(
+                        BACKGROUND_TEXTURE,
+                        xOffset,
+                        yOffset,
+                        0,
+                        0f,
+                        0f,
+                        ITEM_SIZE_X,
+                        ITEM_SIZE_Y,
+                        TEXTURE_WIDTH,
+                        TEXTURE_WIDTH
+                    )
                     drawContext.drawItem(itemStack, xOffset + 1, yOffset + 1)
                     drawContext.drawItemInSlot(textRenderer, itemStack, xOffset + 1, yOffset + 1)
                 }
