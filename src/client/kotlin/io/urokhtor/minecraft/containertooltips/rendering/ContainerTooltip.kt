@@ -15,13 +15,13 @@ class ContainerTooltip {
             x,
             Y_START,
             getWidth(container),
-            getHeight(container) + textRenderer.fontHeight + PADDING,
+            getHeight(container) + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING,
             0
         )
 
         drawContext.drawText(textRenderer, container.name, x, Y_START, Colors.WHITE, true)
 
-        val backgroundTextureYStart = Y_START + textRenderer.fontHeight + PADDING
+        val backgroundTextureYStart = Y_START + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING
 
         drawContext.drawGuiTexture(
             BACKGROUND_TEXTURE,
