@@ -11,11 +11,12 @@ class EmptyContainerTooltip {
         drawContext.drawTooltip(
             textRenderer,
             listOf(
-                Text.of(container.name),
-                Text.translatable("container.empty").withColor(Colors.GRAY)
+                Text.of(container.name).asOrderedText(),
+                Text.translatable("container.empty").withColor(Colors.GRAY).asOrderedText()
             ),
-            horizontalCenter - textRenderer.getWidth(container.name),
-            Y_START + textRenderer.fontHeight
+            DirectTooltipPositioner(),
+            horizontalCenter - textRenderer.getWidth(container.name) / 2,
+            Y_START
         )
     }
 }
