@@ -2,6 +2,8 @@ package io.urokhtor.minecraft.containertooltips
 
 import io.urokhtor.minecraft.containertooltips.Requests.INVENTORY_RESPONSE
 import io.urokhtor.minecraft.containertooltips.configuration.Configuration
+import io.urokhtor.minecraft.containertooltips.rendering.ContainerTooltip
+import io.urokhtor.minecraft.containertooltips.rendering.EmptyContainerTooltip
 import me.shedaniel.autoconfig.AutoConfig
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer
 import net.fabricmc.api.ClientModInitializer
@@ -9,6 +11,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
+import net.minecraft.item.AirBlockItem
 import net.minecraft.util.ActionResult
 import org.lwjgl.glfw.GLFW
 
@@ -16,6 +19,7 @@ object ContainerTooltipsClient : ClientModInitializer {
 
 	private val inventoryResponseHandler = InventoryResponseHandler()
 	private val containerTooltip = ContainerTooltip()
+	private val emptyContainerTooltip = EmptyContainerTooltip()
 	private lateinit var configuration: Configuration
 	private val previewKey = InputUtil.Type.KEYSYM.createFromCode(GLFW.GLFW_KEY_LEFT_SHIFT)
 
@@ -45,7 +49,15 @@ object ContainerTooltipsClient : ClientModInitializer {
 				}
 
 				val client = MinecraftClient.getInstance()
-				containerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
+
+				val isInventoryEmpty = it.inventory
+					.none { inventory -> inventory.item !is AirBlockItem }
+
+				if (isInventoryEmpty) {
+					emptyContainerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
+				} else {
+					containerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
+				}
 			}
 		}
 	}
