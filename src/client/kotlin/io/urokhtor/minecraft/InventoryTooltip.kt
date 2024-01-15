@@ -3,6 +3,7 @@ package io.urokhtor.minecraft
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.item.AirBlockItem
+import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Colors
 
@@ -18,7 +19,7 @@ class InventoryTooltip {
                 textRenderer,
                 listOf(
                     Text.of(container.name),
-                    Text.translatable("container.empty").withColor(Colors.GRAY)
+                    Text.translatable("container.empty").setStyle(Style.EMPTY.withColor(Colors.GRAY))
                 ),
                 horizontalCenter - textRenderer.getWidth(container.name),
                 Y_START + textRenderer.fontHeight
