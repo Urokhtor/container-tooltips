@@ -1,4 +1,4 @@
-package io.urokhtor.minecraft
+package io.urokhtor.minecraft.containertooltips
 
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext

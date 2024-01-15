@@ -1,4 +1,4 @@
-package io.urokhtor.minecraft.configuration;
+package io.urokhtor.minecraft.containertooltips.configuration;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;

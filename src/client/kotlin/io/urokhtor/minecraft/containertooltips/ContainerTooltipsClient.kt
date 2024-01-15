@@ -1,7 +1,7 @@
-package io.urokhtor.minecraft
+package io.urokhtor.minecraft.containertooltips
 
-import io.urokhtor.minecraft.Requests.INVENTORY_RESPONSE
-import io.urokhtor.minecraft.configuration.Configuration
+import io.urokhtor.minecraft.containertooltips.Requests.INVENTORY_RESPONSE
+import io.urokhtor.minecraft.containertooltips.configuration.Configuration
 import me.shedaniel.autoconfig.AutoConfig
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer
 import net.fabricmc.api.ClientModInitializer

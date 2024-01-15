@@ -18,18 +18,18 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "io.urokhtor.minecraft.ContainerTooltips",
+				"value": "io.urokhtor.minecraft.containertooltips.ContainerTooltips",
 				"adapter": "kotlin"
 			}
 		],
 		"client": [
 			{
-				"value": "io.urokhtor.minecraft.ContainerTooltipsClient",
+				"value": "io.urokhtor.minecraft.containertooltips.ContainerTooltipsClient",
 				"adapter": "kotlin"
 			}
 		],
 		"modmenu": [
-			"io.urokhtor.minecraft.configuration.ModMenuIntegration"
+			"io.urokhtor.minecraft.containertooltips.configuration.ModMenuIntegration"
 		]
 	},
 	"mixins": [

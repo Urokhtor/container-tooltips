@@ -1,4 +1,4 @@
-package io.urokhtor.minecraft
+package io.urokhtor.minecraft.containertooltips
 
 object Responses {
     const val MAX_SIZE = "MaxSize"

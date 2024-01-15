@@ -1,7 +1,7 @@
-package io.urokhtor.minecraft.mixin.client;
+package io.urokhtor.minecraft.containertooltips.mixin.client;
 
-import io.urokhtor.minecraft.CurrentInventoryContext;
-import io.urokhtor.minecraft.Requests;
+import io.urokhtor.minecraft.containertooltips.CurrentInventoryContext;
+import io.urokhtor.minecraft.containertooltips.Requests;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
