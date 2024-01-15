@@ -4,6 +4,7 @@ import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.item.AirBlockItem
 import net.minecraft.text.Text
+import net.minecraft.util.Colors
 
 private const val Y_START: Int = 10
 
@@ -15,7 +16,10 @@ class InventoryTooltip {
         if (isInventoryEmpty) {
             drawContext.drawTooltip(
                 textRenderer,
-                Text.of(container.name),
+                listOf(
+                    Text.of(container.name),
+                    Text.translatable("container.empty").withColor(Colors.GRAY)
+                ),
                 horizontalCenter - textRenderer.getWidth(container.name),
                 Y_START + textRenderer.fontHeight
             )
