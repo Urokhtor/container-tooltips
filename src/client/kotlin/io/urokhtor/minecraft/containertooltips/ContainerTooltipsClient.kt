@@ -15,7 +15,7 @@ import org.lwjgl.glfw.GLFW
 object ContainerTooltipsClient : ClientModInitializer {
 
 	private val inventoryResponseHandler = InventoryResponseHandler()
-	private val inventoryTooltip = InventoryTooltip()
+	private val containerTooltip = ContainerTooltip()
 	private lateinit var configuration: Configuration
 	private val previewKey = InputUtil.Type.KEYSYM.createFromCode(GLFW.GLFW_KEY_LEFT_SHIFT)
 
@@ -32,20 +32,20 @@ object ContainerTooltipsClient : ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(INVENTORY_RESPONSE) { _, _, buffer, _ ->
 			run {
 				buffer.readNbt()?.let {
-					CurrentInventoryContext.set(inventoryResponseHandler.parseResponse(it))
+					CurrentContainerContext.set(inventoryResponseHandler.parseAsContainer(it))
 				}
 			}
 		}
 
 		HudRenderCallback.EVENT.register { guiGraphics, _ ->
-			CurrentInventoryContext.get()?.let {
+			CurrentContainerContext.get()?.let {
 				if (!configuration.showAutomatically &&
 					!InputUtil.isKeyPressed(MinecraftClient.getInstance().window.handle, previewKey.code)) {
 					return@let
 				}
 
 				val client = MinecraftClient.getInstance()
-				inventoryTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
+				containerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
 			}
 		}
 	}

@@ -8,7 +8,7 @@ import net.minecraft.util.Colors
 
 private const val Y_START: Int = 10
 
-class InventoryTooltip {
+class ContainerTooltip {
     fun render(textRenderer: TextRenderer, horizontalCenter: Int, drawContext: DrawContext, container: Container) {
         val isInventoryEmpty = container.inventory
             .none { it.item !is AirBlockItem }

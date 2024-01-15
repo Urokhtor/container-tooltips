@@ -1,6 +1,6 @@
 package io.urokhtor.minecraft.containertooltips.mixin.client;
 
-import io.urokhtor.minecraft.containertooltips.CurrentInventoryContext;
+import io.urokhtor.minecraft.containertooltips.CurrentContainerContext;
 import io.urokhtor.minecraft.containertooltips.Requests;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -55,7 +55,7 @@ public abstract class PlayerRayCastClientMixin {
 				buffer.writeBlockPos(blockPosition);
 				ClientPlayNetworking.send(Requests.INSTANCE.getINVENTORY_REQUEST(), buffer);
 			} else {
-				CurrentInventoryContext.INSTANCE.reset();
+				CurrentContainerContext.INSTANCE.reset();
 			}
 		}
 	}
