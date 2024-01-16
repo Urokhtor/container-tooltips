@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.2.1+1.20.4
+
+- Add back text telling when a container is empty.
+- Fix position of empty container tooltip, so that it is properly centered horizontally and at right position vertically.
+
 ## 1.2.0+1.20.4
 
 - Add configuration support with Cloth Config and Mod Menu.
