@@ -1,15 +1,13 @@
 package io.urokhtor.minecraft.containertooltips.mixin.client;
 
 import io.urokhtor.minecraft.containertooltips.CurrentContainerContext;
-import io.urokhtor.minecraft.containertooltips.Requests;
+import io.urokhtor.minecraft.containertooltips.InventoryRequestPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.EnderChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -51,9 +49,7 @@ public abstract class PlayerRayCastClientMixin {
 
 			if (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity || blockEntity instanceof AbstractFurnaceBlockEntity) {
 				lastPollInstant = Instant.now();
-				PacketByteBuf buffer = PacketByteBufs.create();
-				buffer.writeBlockPos(blockPosition);
-				ClientPlayNetworking.send(Requests.INSTANCE.getINVENTORY_REQUEST(), buffer);
+				ClientPlayNetworking.send(new InventoryRequestPayload(blockPosition));
 			} else {
 				CurrentContainerContext.INSTANCE.reset();
 			}

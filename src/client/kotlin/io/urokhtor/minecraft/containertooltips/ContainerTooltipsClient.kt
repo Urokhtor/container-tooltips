@@ -1,6 +1,5 @@
 package io.urokhtor.minecraft.containertooltips
 
-import io.urokhtor.minecraft.containertooltips.Requests.INVENTORY_RESPONSE
 import io.urokhtor.minecraft.containertooltips.configuration.Configuration
 import io.urokhtor.minecraft.containertooltips.rendering.ContainerTooltip
 import io.urokhtor.minecraft.containertooltips.rendering.EmptyContainerTooltip
@@ -9,9 +8,11 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.AirBlockItem
+import net.minecraft.registry.BuiltinRegistries
 import net.minecraft.util.ActionResult
 import org.lwjgl.glfw.GLFW
 
@@ -33,10 +34,12 @@ object ContainerTooltipsClient : ClientModInitializer {
 			ActionResult.PASS
 		}
 
-		ClientPlayNetworking.registerGlobalReceiver(INVENTORY_RESPONSE) { _, _, buffer, _ ->
+		PayloadTypeRegistry.playS2C().register(InventoryResponsePayload.ID, InventoryResponsePayload.PACKET_CODEC)
+		ClientPlayNetworking.registerGlobalReceiver(InventoryResponsePayload.ID) { payload, _ ->
+			val registryWrapperLookup = BuiltinRegistries.createWrapperLookup()
 			run {
-				buffer.readNbt()?.let {
-					CurrentContainerContext.set(inventoryResponseHandler.parseAsContainer(it))
+				payload.buffer.let {
+					CurrentContainerContext.set(inventoryResponseHandler.parseAsContainer(it, registryWrapperLookup))
 				}
 			}
 		}
