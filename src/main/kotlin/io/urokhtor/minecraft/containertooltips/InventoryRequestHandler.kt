@@ -6,12 +6,7 @@ import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.ChestBlockEntity
 import net.minecraft.block.entity.EnderChestBlockEntity
 import net.minecraft.block.entity.LootableContainerBlockEntity
-import net.minecraft.inventory.Inventories
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.nbt.NbtInt
-import net.minecraft.nbt.NbtString
-import net.minecraft.registry.RegistryWrapper
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.collection.DefaultedList
@@ -21,14 +16,13 @@ class InventoryRequestHandler {
 
     fun createResponse(
         player: ServerPlayerEntity,
-        registryWrapperLookup: RegistryWrapper.WrapperLookup,
         blockPosition: BlockPos
-    ): NbtCompound? {
+    ): InventoryResponsePayload? {
         return when (val blockEntity: BlockEntity? = player.serverWorld.getBlockEntity(blockPosition)) {
-            is ChestBlockEntity -> readChestInventory(blockEntity, player, registryWrapperLookup)
-            is LootableContainerBlockEntity -> readGenericInventory(blockEntity, registryWrapperLookup)
-            is EnderChestBlockEntity -> readEnderChestInventory(player, registryWrapperLookup)
-            is AbstractFurnaceBlockEntity -> readFurnaceInventory(blockEntity, registryWrapperLookup)
+            is ChestBlockEntity -> readChestInventory(blockEntity, player)
+            is EnderChestBlockEntity -> readEnderChestInventory(player)
+            is LootableContainerBlockEntity -> readGenericInventory(blockEntity)
+            is AbstractFurnaceBlockEntity -> readFurnaceInventory(blockEntity)
             else -> null
         }
     }
@@ -40,9 +34,8 @@ class InventoryRequestHandler {
      */
     private fun readChestInventory(
         blockEntity: ChestBlockEntity,
-        player: ServerPlayerEntity,
-        registryWrapperLookup: RegistryWrapper.WrapperLookup
-    ): NbtCompound {
+        player: ServerPlayerEntity
+    ): InventoryResponsePayload {
         val blockState = blockEntity.cachedState
         val inventory = ChestBlock.getInventory(
             blockState.block as ChestBlock,
@@ -57,42 +50,42 @@ class InventoryRequestHandler {
             defaultedList.set(slot, inventory.getStack(slot))
         }
 
-        val nbtCompound = NbtCompound()
-        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(inventory.size()))
-        Inventories.writeNbt(nbtCompound, defaultedList, registryWrapperLookup)
-        nbtCompound.put(Responses.NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
-        return nbtCompound
+        return InventoryResponsePayload(
+            name = blockEntity.displayName.asTruncatedString(32),
+            maxSize = inventory.size(),
+            items = defaultedList
+        )
     }
 
-    private fun readGenericInventory(
-        blockEntity: LootableContainerBlockEntity,
-        registryWrapperLookup: RegistryWrapper.WrapperLookup
-    ): NbtCompound {
-        val nbtCompound = blockEntity.createNbt(registryWrapperLookup)
-        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(blockEntity.size()))
-        nbtCompound.put(Responses.NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
-        return nbtCompound
+    private fun readEnderChestInventory(player: ServerPlayerEntity) = InventoryResponsePayload(
+        name = Text.translatable("container.enderchest").asTruncatedString(32),
+        maxSize = player.enderChestInventory.size(),
+        items = player.enderChestInventory.heldStacks
+    )
+
+    private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): InventoryResponsePayload {
+        val defaultedList = DefaultedList.ofSize(blockEntity.size(), ItemStack.EMPTY)
+        IntRange(0, blockEntity.size() - 1).map { slot ->
+            defaultedList.set(slot, blockEntity.getStack(slot))
+        }
+
+        return InventoryResponsePayload(
+            name = blockEntity.displayName.asTruncatedString(32),
+            maxSize = blockEntity.size(),
+            items = defaultedList
+        )
     }
 
-    private fun readEnderChestInventory(
-        player: ServerPlayerEntity,
-        registryWrapperLookup: RegistryWrapper.WrapperLookup
-    ): NbtCompound {
-        val nbtList = player.enderChestInventory.toNbtList(registryWrapperLookup)
-        val nbtCompound = NbtCompound()
-        nbtCompound.put(Responses.ITEMS, nbtList)
-        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(player.enderChestInventory.size()))
-        nbtCompound.put(Responses.NAME, NbtString.of(Text.translatable("container.enderchest").asTruncatedString(32)))
-        return nbtCompound
-    }
+    private fun readFurnaceInventory(blockEntity: AbstractFurnaceBlockEntity): InventoryResponsePayload {
+        val defaultedList = DefaultedList.ofSize(blockEntity.size(), ItemStack.EMPTY)
+        IntRange(0, blockEntity.size() - 1).map { slot ->
+            defaultedList.set(slot, blockEntity.getStack(slot))
+        }
 
-    private fun readFurnaceInventory(
-        blockEntity: AbstractFurnaceBlockEntity,
-        registryWrapperLookup: RegistryWrapper.WrapperLookup
-    ): NbtCompound {
-        val nbtCompound = blockEntity.createNbt(registryWrapperLookup)
-        nbtCompound.put(Responses.MAX_SIZE, NbtInt.of(blockEntity.size()))
-        nbtCompound.put(Responses.NAME, NbtString.of(blockEntity.displayName.asTruncatedString(32)))
-        return nbtCompound
+        return InventoryResponsePayload(
+            name = blockEntity.displayName.asTruncatedString(32),
+            maxSize = blockEntity.size(),
+            items = defaultedList
+        )
     }
 }

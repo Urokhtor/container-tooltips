@@ -12,13 +12,11 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.AirBlockItem
-import net.minecraft.registry.BuiltinRegistries
 import net.minecraft.util.ActionResult
 import org.lwjgl.glfw.GLFW
 
 object ContainerTooltipsClient : ClientModInitializer {
 
-	private val inventoryResponseHandler = InventoryResponseHandler()
 	private val containerTooltip = ContainerTooltip()
 	private val emptyContainerTooltip = EmptyContainerTooltip()
 	private lateinit var configuration: Configuration
@@ -36,10 +34,9 @@ object ContainerTooltipsClient : ClientModInitializer {
 
 		PayloadTypeRegistry.playS2C().register(InventoryResponsePayload.ID, InventoryResponsePayload.PACKET_CODEC)
 		ClientPlayNetworking.registerGlobalReceiver(InventoryResponsePayload.ID) { payload, _ ->
-			val registryWrapperLookup = BuiltinRegistries.createWrapperLookup()
 			run {
-				payload.buffer.let {
-					CurrentContainerContext.set(inventoryResponseHandler.parseAsContainer(it, registryWrapperLookup))
+				payload.let {
+					CurrentContainerContext.set(Container(it.name, it.items))
 				}
 			}
 		}
