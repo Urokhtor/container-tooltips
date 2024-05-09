@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.2+1.20.6-beta.1
+
+- Add support for Minecraft 1.20.5 and 1.20.6.
+
 ## 1.2.1+1.20.4
 
 - Add back text telling when a container is empty.
