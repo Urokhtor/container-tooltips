@@ -10,7 +10,7 @@ data class InventoryRequestPayload(val blockPos: BlockPos) : CustomPayload {
     override fun getId() = ID
 
     companion object {
-        val ID: Id<InventoryRequestPayload> = CustomPayload.id("container-tooltips:inventory-request")
+        val ID: Id<InventoryRequestPayload> = CustomPayload.id("container-tooltips/inventory-request")
         val PACKET_CODEC: PacketCodec<ByteBuf, InventoryRequestPayload> = object:
             PacketCodec<ByteBuf, InventoryRequestPayload> {
             override fun decode(buf: ByteBuf): InventoryRequestPayload {

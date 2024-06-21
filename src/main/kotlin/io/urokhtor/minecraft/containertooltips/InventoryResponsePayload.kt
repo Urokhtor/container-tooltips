@@ -10,7 +10,7 @@ data class InventoryResponsePayload(val name: String, val maxSize: Int, val item
     override fun getId() = ID
 
     companion object {
-        val ID: Id<InventoryResponsePayload> = CustomPayload.id("container-tooltips:inventory-response")
+        val ID: Id<InventoryResponsePayload> = CustomPayload.id("container-tooltips/inventory-response")
         val PACKET_CODEC: PacketCodec<RegistryByteBuf, InventoryResponsePayload> = object:
             PacketCodec<RegistryByteBuf, InventoryResponsePayload> {
 

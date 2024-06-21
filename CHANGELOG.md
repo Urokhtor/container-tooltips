@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.2+1.21
+
+- Add support for Minecraft 1.21.
+
 ## 1.2.2+1.20.6
 
 - Add support for Minecraft 1.20.5 and 1.20.6.
