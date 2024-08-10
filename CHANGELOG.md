@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.0+1.20.6
+
+- Add support to configure which key shows the tooltip.
+
 ## 1.2.2+1.20.6
 
 - Add support for Minecraft 1.20.5 and 1.20.6.
