@@ -13,7 +13,6 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.AirBlockItem
 import net.minecraft.util.ActionResult
-import org.lwjgl.glfw.GLFW
 
 object ContainerTooltipsClient : ClientModInitializer {
 
@@ -21,7 +20,6 @@ object ContainerTooltipsClient : ClientModInitializer {
 	private val containerTooltip = ContainerTooltip()
 	private val emptyContainerTooltip = EmptyContainerTooltip()
 	private lateinit var configuration: Configuration
-	private val previewKey = InputUtil.Type.KEYSYM.createFromCode(GLFW.GLFW_KEY_LEFT_SHIFT)
 
 	override fun onInitializeClient() {
 		AutoConfig.register(Configuration::class.java, ::JanksonConfigSerializer)
@@ -43,8 +41,7 @@ object ContainerTooltipsClient : ClientModInitializer {
 
 		HudRenderCallback.EVENT.register { guiGraphics, _ ->
 			CurrentContainerContext.get()?.let {
-				if (!configuration.showAutomatically &&
-					!InputUtil.isKeyPressed(MinecraftClient.getInstance().window.handle, previewKey.code)) {
+				if (!configuration.showAutomatically && keyIsNotPressed(configuration.showWithKeyCode)) {
 					return@let
 				}
 
@@ -61,4 +58,7 @@ object ContainerTooltipsClient : ClientModInitializer {
 			}
 		}
 	}
+
+	private fun keyIsNotPressed(keyCode: Int) =
+		!InputUtil.isKeyPressed(MinecraftClient.getInstance().window.handle, keyCode)
 }
