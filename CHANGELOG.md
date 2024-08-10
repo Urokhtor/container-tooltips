@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.0+1.21
+
+- Add support to configure which key shows the tooltip.
+
 ## 1.2.2+1.21
 
 - Add support for Minecraft 1.21.
