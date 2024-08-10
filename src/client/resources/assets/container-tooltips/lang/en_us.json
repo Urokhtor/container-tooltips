@@ -1,5 +1,10 @@
 {
   "container.empty": "Empty",
   "text.autoconfig.container-tooltips.title": "Container Tooltips",
-  "text.autoconfig.container-tooltips.option.showAutomatically": "Show the tooltip automatically"
+  "text.autoconfig.container-tooltips.option.showAutomatically": "Show the tooltip automatically",
+  "text.autoconfig.container-tooltips.option.showAutomatically.@Tooltip[0]": "When enabled, tooltip is shown automatically.",
+  "text.autoconfig.container-tooltips.option.showAutomatically.@Tooltip[1]": "Otherwise configured key needs to be pressed to show the tooltip.",
+  "text.autoconfig.container-tooltips.option.showWithKeyCode": "Which key shows the tooltip",
+  "text.autoconfig.container-tooltips.option.showWithKeyCode.@Tooltip[0]": "Effective only when tooltip is not shown automatically. Left Shift by default.",
+  "text.autoconfig.container-tooltips.option.showWithKeyCode.@Tooltip[1]": "Uses GLFW input codes. Check GLFW Input reference documentation for key mappings."
 }
