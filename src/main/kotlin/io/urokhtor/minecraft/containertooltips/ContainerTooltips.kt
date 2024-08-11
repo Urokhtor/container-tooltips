@@ -10,7 +10,7 @@ object ContainerTooltips : ModInitializer {
 
     override fun onInitialize() {
         PayloadTypeRegistry.playC2S().register(InventoryRequestPayload.ID, InventoryRequestPayload.PACKET_CODEC)
-        PayloadTypeRegistry.playC2S().register(InventoryResponsePayload.ID, InventoryResponsePayload.PACKET_CODEC)
+        PayloadTypeRegistry.playS2C().register(InventoryResponsePayload.ID, InventoryResponsePayload.PACKET_CODEC)
         ServerPlayNetworking.registerGlobalReceiver(InventoryRequestPayload.ID) { payload, context ->
             inventoryRequestHandler.createResponse(context.player(), payload.blockPos)?.let {
                 context.responseSender().sendPacket(it)
