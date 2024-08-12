@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.3.1+1.20.6
+
+- Fix issue where server could not write inventory response which caused the client to lose connection.
+
+
 ## 1.3.0+1.20.6
 
 - Add support to configure which key shows the tooltip.
