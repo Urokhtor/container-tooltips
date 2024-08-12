@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.2+1.21.1
+
+- Add support for 1.21.1
+
 ## 1.3.1+1.21
 
 - Fix issue where server could not write inventory response which caused the client to lose connection.
