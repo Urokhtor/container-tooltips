@@ -4,6 +4,7 @@ import io.urokhtor.minecraft.containertooltips.Container
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.tooltip.TooltipBackgroundRenderer
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.util.Colors
 import kotlin.math.roundToInt
 
@@ -14,31 +15,32 @@ class ContainerTooltip {
             drawContext,
             x,
             Y_START,
-            getWidth(container),
-            getHeight(container) + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING,
-            0
+            getWidth(container) + TOOLTIP_BACKGROUND_PADDING,
+            getHeight(container) + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING * 2,
+            0,
+            null
         )
 
         drawContext.drawText(textRenderer, container.name, x, Y_START, Colors.WHITE, true)
 
         val backgroundTextureYStart = Y_START + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING
 
-        drawContext.drawGuiTexture(
-            BACKGROUND_TEXTURE,
+        drawContext.fill(
             x,
             backgroundTextureYStart,
-            this.getWidth(container),
-            this.getHeight(container)
+            x + this.getWidth(container) + TOOLTIP_BACKGROUND_PADDING,
+            backgroundTextureYStart + this.getHeight(container) + TOOLTIP_BACKGROUND_PADDING,
+            Colors.LIGHT_GRAY
         )
 
         container.inventory.chunked(getItemsOnOneRow(container))
             .forEachIndexed { stackIndex, itemStacks ->
                 itemStacks.forEachIndexed { itemIndex, itemStack ->
-                    val xOffset = x + itemIndex * ITEM_SIZE_X + 1
-                    val yOffset = backgroundTextureYStart + stackIndex * ITEM_SIZE_Y + 1
-                    drawContext.drawGuiTexture(SLOT_TEXTURE, xOffset, yOffset, 0, ITEM_SIZE_X, ITEM_SIZE_Y)
+                    val xOffset = x + itemIndex * ITEM_SIZE_X + TOOLTIP_BACKGROUND_PADDING
+                    val yOffset = backgroundTextureYStart + stackIndex * ITEM_SIZE_Y + TOOLTIP_BACKGROUND_PADDING
+                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, SLOT_TEXTURE, xOffset, yOffset, ITEM_SIZE_X, ITEM_SIZE_Y)
                     drawContext.drawItem(itemStack, xOffset + 1, yOffset + 1)
-                    drawContext.drawItemInSlot(textRenderer, itemStack, xOffset + 1, yOffset + 1)
+                    drawContext.drawStackOverlay(textRenderer, itemStack, xOffset + 1, yOffset + 1)
                 }
             }
     }

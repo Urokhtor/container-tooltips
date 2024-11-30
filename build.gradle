@@ -2,9 +2,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id 'fabric-loom' version '1.7.1'
+	id 'fabric-loom' version '1.8.11'
 	id 'maven-publish'
-  	id "org.jetbrains.kotlin.jvm" version "2.0.0"
+  	id "org.jetbrains.kotlin.jvm" version "2.0.21"
 	id 'com.modrinth.minotaur' version '2.+'
 }
 
@@ -81,10 +81,10 @@ modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
 	projectId = "bec9o8lo"
 	versionNumber = "${project.version}"
-	versionType = "release"
+	versionType = "beta"
 	changelog = file("changelog/CHANGELOG-${project.version}.md").exists() ? file("changelog/CHANGELOG-${project.version}.md").text : ""
 	uploadFile = remapJar
-	gameVersions = ["1.21", "1.21.1"]
+	gameVersions = ["1.21.2", "1.21.3"]
 	loaders = ["fabric"]
 	dependencies {
 		required.project 'P7dR8mSH' // fabric-api
