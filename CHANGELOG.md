@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.3+1.21.3
+
+- Add support for 1.21.2 and 1.21.3
+
 ## 1.3.2+1.21.1
 
 - Add support for 1.21.1

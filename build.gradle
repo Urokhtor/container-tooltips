@@ -71,7 +71,7 @@ modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
 	projectId = "bec9o8lo"
 	versionNumber = "${project.version}"
-	versionType = "beta"
+	versionType = "release"
 	changelog = file("changelog/CHANGELOG-${project.version}.md").exists() ? file("changelog/CHANGELOG-${project.version}.md").text : ""
 	uploadFile = remapJar
 	gameVersions = ["1.21.2", "1.21.3"]
