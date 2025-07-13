@@ -2,9 +2,9 @@ package io.urokhtor.minecraft.containertooltips.rendering
 
 import io.urokhtor.minecraft.containertooltips.Container
 import net.minecraft.client.font.TextRenderer
+import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.tooltip.TooltipBackgroundRenderer
-import net.minecraft.client.render.RenderLayer
 import net.minecraft.util.Colors
 import kotlin.math.roundToInt
 
@@ -17,7 +17,6 @@ class ContainerTooltip {
             Y_START,
             getWidth(container) + TOOLTIP_BACKGROUND_PADDING,
             getHeight(container) + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING * 2,
-            0,
             null
         )
 
@@ -38,7 +37,14 @@ class ContainerTooltip {
                 itemStacks.forEachIndexed { itemIndex, itemStack ->
                     val xOffset = x + itemIndex * ITEM_SIZE_X + TOOLTIP_BACKGROUND_PADDING
                     val yOffset = backgroundTextureYStart + stackIndex * ITEM_SIZE_Y + TOOLTIP_BACKGROUND_PADDING
-                    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, SLOT_TEXTURE, xOffset, yOffset, ITEM_SIZE_X, ITEM_SIZE_Y)
+                    drawContext.drawGuiTexture(
+                        RenderPipelines.GUI_TEXTURED,
+                        SLOT_TEXTURE,
+                        xOffset,
+                        yOffset,
+                        ITEM_SIZE_X,
+                        ITEM_SIZE_Y
+                    )
                     drawContext.drawItem(itemStack, xOffset + 1, yOffset + 1)
                     drawContext.drawStackOverlay(textRenderer, itemStack, xOffset + 1, yOffset + 1)
                 }

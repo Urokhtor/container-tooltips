@@ -18,7 +18,7 @@ class InventoryRequestHandler {
         player: ServerPlayerEntity,
         blockPosition: BlockPos
     ): InventoryResponsePayload? {
-        return when (val blockEntity: BlockEntity? = player.serverWorld.getBlockEntity(blockPosition)) {
+        return when (val blockEntity: BlockEntity? = player.world.getBlockEntity(blockPosition)) {
             is ChestBlockEntity -> readChestInventory(blockEntity, player)
             is EnderChestBlockEntity -> readEnderChestInventory(player)
             is LootableContainerBlockEntity -> readGenericInventory(blockEntity)
@@ -40,7 +40,7 @@ class InventoryRequestHandler {
         val inventory = ChestBlock.getInventory(
             blockState.block as ChestBlock,
             blockState,
-            player.serverWorld,
+            player.world,
             blockEntity.pos,
             true
         )
