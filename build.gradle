@@ -1,7 +1,7 @@
 plugins {
-	id 'fabric-loom' version '1.8.11'
+	id 'fabric-loom' version '1.10.1'
 	id 'maven-publish'
-  	id "org.jetbrains.kotlin.jvm" version "2.0.21"
+  	id "org.jetbrains.kotlin.jvm" version "2.2.0"
 	id 'com.modrinth.minotaur' version '2.+'
 }
 
@@ -74,7 +74,7 @@ modrinth {
 	versionType = "release"
 	changelog = file("changelog/CHANGELOG-${project.version}.md").exists() ? file("changelog/CHANGELOG-${project.version}.md").text : ""
 	uploadFile = remapJar
-	gameVersions = ["1.21.2", "1.21.3", "1.21.4"]
+	gameVersions = ["1.21.5"]
 	loaders = ["fabric"]
 	dependencies {
 		required.project 'P7dR8mSH' // fabric-api
