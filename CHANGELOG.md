@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.0+1.20.4
+
+- Add support to configure which key shows the tooltip.
+
 ## 1.2.1+1.20.4
 
 - Add back text telling when a container is empty.
