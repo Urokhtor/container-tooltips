@@ -7,17 +7,19 @@ import me.shedaniel.autoconfig.AutoConfig
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.item.AirBlockItem
 import net.minecraft.util.ActionResult
+import net.minecraft.util.Identifier
 
 object ContainerTooltipsClient : ClientModInitializer {
 
 	private val containerTooltip = ContainerTooltip()
 	private val emptyContainerTooltip = EmptyContainerTooltip()
 	private lateinit var configuration: Configuration
+	private val tooltipIdentifier = Identifier.of("container-tooltips", "tooltip")
 
 	override fun onInitializeClient() {
 		AutoConfig.register(Configuration::class.java, ::JanksonConfigSerializer)
@@ -37,7 +39,7 @@ object ContainerTooltipsClient : ClientModInitializer {
 			}
 		}
 
-		HudRenderCallback.EVENT.register { guiGraphics, _ ->
+		HudElementRegistry.addLast(tooltipIdentifier) { guiGraphics, _ ->
 			CurrentContainerContext.get()?.let {
 				if (!configuration.showAutomatically && keyIsNotPressed(configuration.showWithKeyCode)) {
 					return@let
