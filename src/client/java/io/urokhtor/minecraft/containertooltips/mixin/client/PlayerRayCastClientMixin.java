@@ -24,7 +24,7 @@ import java.time.Instant;
 @Mixin(Entity.class)
 public abstract class PlayerRayCastClientMixin {
 	@Shadow
-	public abstract World getWorld();
+	public abstract World getEntityWorld();
 
 	@Unique
 	private BlockPos lastPositionStaredAt;
@@ -45,7 +45,7 @@ public abstract class PlayerRayCastClientMixin {
 			}
 
 			lastPositionStaredAt = blockPosition;
-			BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPosition);
+			BlockEntity blockEntity = this.getEntityWorld().getBlockEntity(blockPosition);
 
 			if (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity || blockEntity instanceof AbstractFurnaceBlockEntity) {
 				lastPollInstant = Instant.now();

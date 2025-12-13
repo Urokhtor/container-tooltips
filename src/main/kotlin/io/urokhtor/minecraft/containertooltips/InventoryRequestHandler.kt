@@ -18,7 +18,7 @@ class InventoryRequestHandler {
         player: ServerPlayerEntity,
         blockPosition: BlockPos
     ): InventoryResponsePayload? {
-        return when (val blockEntity: BlockEntity? = player.world.getBlockEntity(blockPosition)) {
+        return when (val blockEntity: BlockEntity? = player.entityWorld.getBlockEntity(blockPosition)) {
             is ChestBlockEntity -> readChestInventory(blockEntity, player)
             is EnderChestBlockEntity -> readEnderChestInventory(player)
             is LootableContainerBlockEntity -> readGenericInventory(blockEntity)
@@ -40,14 +40,14 @@ class InventoryRequestHandler {
         val inventory = ChestBlock.getInventory(
             blockState.block as ChestBlock,
             blockState,
-            player.world,
+            player.entityWorld,
             blockEntity.pos,
             true
         )
 
         val defaultedList = DefaultedList.ofSize(inventory!!.size(), ItemStack.EMPTY)
-        IntRange(0, inventory.size() - 1).map { slot ->
-            defaultedList.set(slot, inventory.getStack(slot))
+        IntRange(0, inventory.size() - 1).forEach { slot ->
+            defaultedList[slot] = inventory.getStack(slot)
         }
 
         return InventoryResponsePayload(
@@ -65,8 +65,8 @@ class InventoryRequestHandler {
 
     private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): InventoryResponsePayload {
         val defaultedList = DefaultedList.ofSize(blockEntity.size(), ItemStack.EMPTY)
-        IntRange(0, blockEntity.size() - 1).map { slot ->
-            defaultedList.set(slot, blockEntity.getStack(slot))
+        IntRange(0, blockEntity.size() - 1).forEach { slot ->
+            defaultedList[slot] = blockEntity.getStack(slot)
         }
 
         return InventoryResponsePayload(
@@ -78,8 +78,8 @@ class InventoryRequestHandler {
 
     private fun readFurnaceInventory(blockEntity: AbstractFurnaceBlockEntity): InventoryResponsePayload {
         val defaultedList = DefaultedList.ofSize(blockEntity.size(), ItemStack.EMPTY)
-        IntRange(0, blockEntity.size() - 1).map { slot ->
-            defaultedList.set(slot, blockEntity.getStack(slot))
+        IntRange(0, blockEntity.size() - 1).forEach { slot ->
+            defaultedList[slot] = blockEntity.getStack(slot)
         }
 
         return InventoryResponsePayload(

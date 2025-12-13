@@ -58,5 +58,5 @@ object ContainerTooltipsClient : ClientModInitializer {
 	}
 
 	private fun keyIsNotPressed(keyCode: Int) =
-		!InputUtil.isKeyPressed(MinecraftClient.getInstance().window.handle, keyCode)
+		!InputUtil.isKeyPressed(MinecraftClient.getInstance().window, keyCode)
 }
