@@ -61,10 +61,7 @@ object ContainerTooltipsClient : ClientModInitializer {
 	private fun registerRenderingHook() {
 		HudElementRegistry.addLast(tooltipIdentifier) { guiGraphics, _ ->
 			CurrentContainerContext.get()?.let { container ->
-				if (
-					(!configuration.showAutomatically &&
-					keyIsNotPressed(configuration.showWithKeyCode)) ||
-					inventoryOpen) {
+				if (tooltipIsDisabled() || inventoryOpen) {
 					return@let
 				}
 
@@ -83,6 +80,10 @@ object ContainerTooltipsClient : ClientModInitializer {
 			}
 		}
 	}
+
+	private fun tooltipIsDisabled(): Boolean = (
+				!configuration.showAutomatically && keyIsNotPressed(configuration.showWithKeyCode)
+			)
 
 	private fun keyIsNotPressed(keyCode: Int) =
 		!InputUtil.isKeyPressed(MinecraftClient.getInstance().window, keyCode)
