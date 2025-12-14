@@ -1,6 +1,6 @@
 package io.urokhtor.minecraft.containertooltips.mixin.client;
 
-import io.urokhtor.minecraft.containertooltips.InventoryEventsKt;
+import io.urokhtor.minecraft.containertooltips.ScreenEventsKt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,11 +13,11 @@ public class ScreenMixin {
 
     @Inject(at = @At("TAIL"), method = "init(II)V")
     private void init(int width, int height, CallbackInfo callbackInfo) {
-        InventoryEventsKt.getINVENTORY_OPENED().invoker().onInventoryOpened(MinecraftClient.getInstance());
+        ScreenEventsKt.getSCREEN_OPENED().invoker().onScreenOpened(MinecraftClient.getInstance());
     }
 
     @Inject(at = @At("TAIL"), method = "close")
     private void close(CallbackInfo callbackInfo) {
-        InventoryEventsKt.getINVENTORY_CLOSED().invoker().onInventoryClosed(MinecraftClient.getInstance());
+        ScreenEventsKt.getSCREEN_CLOSED().invoker().onScreenClosed(MinecraftClient.getInstance());
     }
 }
