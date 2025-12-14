@@ -21,6 +21,12 @@ object ContainerTooltipsClient : ClientModInitializer {
 	private val tooltipIdentifier = Identifier.of("container-tooltips", "tooltip")
 
 	override fun onInitializeClient() {
+		registerConfigurationIntegration()
+		registerMessageListeners()
+		registerRenderingHook()
+	}
+
+	private fun registerConfigurationIntegration() {
 		AutoConfig.register(Configuration::class.java, ::JanksonConfigSerializer)
 
 		val configHolder = AutoConfig.getConfigHolder(Configuration::class.java)
@@ -29,7 +35,9 @@ object ContainerTooltipsClient : ClientModInitializer {
 			configuration = config
 			ActionResult.PASS
 		}
+	}
 
+	private fun registerMessageListeners() {
 		ClientPlayNetworking.registerGlobalReceiver(InventoryResponsePayload.ID) { payload, _ ->
 			run {
 				payload.let {
@@ -37,7 +45,9 @@ object ContainerTooltipsClient : ClientModInitializer {
 				}
 			}
 		}
+	}
 
+	private fun registerRenderingHook() {
 		HudElementRegistry.addLast(tooltipIdentifier) { guiGraphics, _ ->
 			CurrentContainerContext.get()?.let { container ->
 				if (!configuration.showAutomatically && keyIsNotPressed(configuration.showWithKeyCode)) {
@@ -47,7 +57,12 @@ object ContainerTooltipsClient : ClientModInitializer {
 				val client = MinecraftClient.getInstance()
 
 				if (container.isEmpty()) {
-					emptyContainerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, container)
+					emptyContainerTooltip.render(
+						client.textRenderer,
+						client.window.scaledWidth / 2,
+						guiGraphics,
+						container
+					)
 				} else {
 					containerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, container)
 				}
