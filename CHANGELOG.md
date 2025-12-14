@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.4+1.21.11
+
+- Hide the tooltip automatically when a screen is open
+
 ## 1.3.3+1.21.11
 
 - Add support for 1.21.11
