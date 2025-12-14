@@ -1,8 +1,12 @@
 package io.urokhtor.minecraft.containertooltips
 
+import net.minecraft.item.AirBlockItem
 import net.minecraft.item.ItemStack
 
-data class Container(val name: String, val inventory: List<ItemStack>)
+data class Container(val name: String, val inventory: List<ItemStack>) {
+    fun isEmpty() = inventory
+        .none { inventory -> inventory.item !is AirBlockItem }
+}
 
 object CurrentContainerContext {
 

@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
-import net.minecraft.item.AirBlockItem
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
 
@@ -40,20 +39,17 @@ object ContainerTooltipsClient : ClientModInitializer {
 		}
 
 		HudElementRegistry.addLast(tooltipIdentifier) { guiGraphics, _ ->
-			CurrentContainerContext.get()?.let {
+			CurrentContainerContext.get()?.let { container ->
 				if (!configuration.showAutomatically && keyIsNotPressed(configuration.showWithKeyCode)) {
 					return@let
 				}
 
 				val client = MinecraftClient.getInstance()
 
-				val isInventoryEmpty = it.inventory
-					.none { inventory -> inventory.item !is AirBlockItem }
-
-				if (isInventoryEmpty) {
-					emptyContainerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
+				if (container.isEmpty()) {
+					emptyContainerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, container)
 				} else {
-					containerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, it)
+					containerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, container)
 				}
 			}
 		}
