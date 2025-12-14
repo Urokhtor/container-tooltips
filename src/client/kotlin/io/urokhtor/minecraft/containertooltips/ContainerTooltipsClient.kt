@@ -19,10 +19,12 @@ object ContainerTooltipsClient : ClientModInitializer {
 	private val emptyContainerTooltip = EmptyContainerTooltip()
 	private lateinit var configuration: Configuration
 	private val tooltipIdentifier = Identifier.of("container-tooltips", "tooltip")
+	private var inventoryOpen = false
 
 	override fun onInitializeClient() {
 		registerConfigurationIntegration()
 		registerMessageListeners()
+		registerEventListeners()
 		registerRenderingHook()
 	}
 
@@ -47,10 +49,22 @@ object ContainerTooltipsClient : ClientModInitializer {
 		}
 	}
 
+	private fun registerEventListeners() {
+		INVENTORY_OPENED.register {
+			inventoryOpen = true
+		}
+		INVENTORY_CLOSED.register {
+			inventoryOpen = false
+		}
+	}
+
 	private fun registerRenderingHook() {
 		HudElementRegistry.addLast(tooltipIdentifier) { guiGraphics, _ ->
 			CurrentContainerContext.get()?.let { container ->
-				if (!configuration.showAutomatically && keyIsNotPressed(configuration.showWithKeyCode)) {
+				if (
+					(!configuration.showAutomatically &&
+					keyIsNotPressed(configuration.showWithKeyCode)) ||
+					inventoryOpen) {
 					return@let
 				}
 

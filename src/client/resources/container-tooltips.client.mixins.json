@@ -3,7 +3,8 @@
 	"package": "io.urokhtor.minecraft.containertooltips.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-      "PlayerRayCastClientMixin"
+		"ScreenMixin",
+		"PlayerRayCastClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
