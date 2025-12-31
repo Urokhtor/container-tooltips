@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.6+1.21.11
+
+- Fix issue where tooltip is not shown any more until next container is opened if player closes chat without sending a message
+
 ## 1.3.5+1.21.11
 
 - Prevent player from seeing loot chest inventories that have not been opened yet

@@ -1,12 +1,13 @@
 {
-	"required": true,
-	"package": "io.urokhtor.minecraft.containertooltips.mixin.client",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"ScreenMixin",
-		"PlayerRayCastClientMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "io.urokhtor.minecraft.containertooltips.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ChatHudMixin",
+    "PlayerRayCastClientMixin",
+    "ScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
