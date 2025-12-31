@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.5+1.21.11
+
+- Prevent player from seeing loot chest inventories that have not been opened yet
+
 ## 1.3.4+1.21.11
 
 - Hide the tooltip automatically when a screen is open

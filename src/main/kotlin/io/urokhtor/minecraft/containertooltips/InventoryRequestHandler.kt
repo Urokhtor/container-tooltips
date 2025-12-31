@@ -12,6 +12,8 @@ import net.minecraft.text.Text
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 
+fun LootableContainerBlockEntity.hasNotBeenLooted() = this.lootTable != null
+
 class InventoryRequestHandler {
 
     fun createResponse(
@@ -35,7 +37,11 @@ class InventoryRequestHandler {
     private fun readChestInventory(
         blockEntity: ChestBlockEntity,
         player: ServerPlayerEntity
-    ): InventoryResponsePayload {
+    ): InventoryResponsePayload? {
+        if (blockEntity.hasNotBeenLooted()) {
+            return null
+        }
+
         val blockState = blockEntity.cachedState
         val inventory = ChestBlock.getInventory(
             blockState.block as ChestBlock,
@@ -63,7 +69,11 @@ class InventoryRequestHandler {
         items = player.enderChestInventory.heldStacks
     )
 
-    private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): InventoryResponsePayload {
+    private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): InventoryResponsePayload? {
+        if (blockEntity.hasNotBeenLooted()) {
+            return null
+        }
+
         val defaultedList = DefaultedList.ofSize(blockEntity.size(), ItemStack.EMPTY)
         IntRange(0, blockEntity.size() - 1).forEach { slot ->
             defaultedList[slot] = blockEntity.getStack(slot)
