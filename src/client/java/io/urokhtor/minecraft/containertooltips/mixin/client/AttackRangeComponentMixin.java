@@ -27,7 +27,7 @@ public abstract class AttackRangeComponentMixin {
 				return;
 			}
 
-			staringContext = InventoryRequest.handleInventoryRequest(hitResult, staringContext, entity.getEntityWorld());
+			staringContext = InventoryRequest.INSTANCE.handleInventoryRequest(hitResult, staringContext, entity.getEntityWorld());
 		}
 	}
 }

@@ -23,7 +23,7 @@ public abstract class PlayerRayCastClientMixin {
 	@Inject(at = @At("RETURN"), method = "raycast")
 	private void onRayCast(CallbackInfoReturnable<HitResult> callbackInfoReturnable) {
 		if (callbackInfoReturnable.getReturnValue() instanceof BlockHitResult hitResult) {
-			staringContext = InventoryRequest.handleInventoryRequest(hitResult, staringContext, this.getEntityWorld());
+			staringContext = InventoryRequest.INSTANCE.handleInventoryRequest(hitResult, staringContext, this.getEntityWorld());
 		}
 	}
 }
