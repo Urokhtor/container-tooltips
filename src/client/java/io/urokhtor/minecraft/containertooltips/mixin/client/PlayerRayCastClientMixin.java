@@ -1,16 +1,9 @@
 package io.urokhtor.minecraft.containertooltips.mixin.client;
 
-import io.urokhtor.minecraft.containertooltips.CurrentContainerContext;
-import io.urokhtor.minecraft.containertooltips.InventoryRequestPayload;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.EnderChestBlockEntity;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
+import io.urokhtor.minecraft.containertooltips.InventoryRequest;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,40 +12,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.time.Instant;
-
 @Mixin(Entity.class)
 public abstract class PlayerRayCastClientMixin {
-	@Shadow
-	public abstract World getEntityWorld();
+
+	@Shadow public abstract World getEntityWorld();
 
 	@Unique
-	private BlockPos lastPositionStaredAt;
-
-	@Unique
-	private Instant lastPollInstant = Instant.now();
+	private InventoryRequest.StaringContext staringContext;
 
 	@Inject(at = @At("RETURN"), method = "raycast")
 	private void onRayCast(CallbackInfoReturnable<HitResult> callbackInfoReturnable) {
 		if (callbackInfoReturnable.getReturnValue() instanceof BlockHitResult hitResult) {
-			BlockPos blockPosition = hitResult.getBlockPos();
-			Instant currentInstant = Instant.now();
-
-			// Don't send network request if we have already requested container's contents, and it has been under 1
-			// since the last time we polled the contents.
-			if (blockPosition.equals(lastPositionStaredAt) && currentInstant.minusSeconds(1).isBefore(lastPollInstant)) {
-				return;
-			}
-
-			lastPositionStaredAt = blockPosition;
-			lastPollInstant = currentInstant;
-			BlockEntity blockEntity = this.getEntityWorld().getBlockEntity(blockPosition);
-
-			if (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity || blockEntity instanceof AbstractFurnaceBlockEntity) {
-				ClientPlayNetworking.send(new InventoryRequestPayload(blockPosition));
-			} else {
-				CurrentContainerContext.INSTANCE.reset();
-			}
+			staringContext = InventoryRequest.handleInventoryRequest(hitResult, staringContext, this.getEntityWorld());
 		}
 	}
 }
