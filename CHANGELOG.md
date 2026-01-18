@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.3.7+1.21.11
+
+- Do not check block position every frame
+- Fix issue where tooltip does not render when holding spear
+
 ## 1.3.6+1.21.11
 
 - Fix issue where tooltip is not shown any more until next container is opened if player closes chat without sending a message
