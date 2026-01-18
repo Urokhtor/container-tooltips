@@ -45,10 +45,10 @@ public abstract class PlayerRayCastClientMixin {
 			}
 
 			lastPositionStaredAt = blockPosition;
+			lastPollInstant = currentInstant;
 			BlockEntity blockEntity = this.getEntityWorld().getBlockEntity(blockPosition);
 
 			if (blockEntity instanceof LootableContainerBlockEntity || blockEntity instanceof EnderChestBlockEntity || blockEntity instanceof AbstractFurnaceBlockEntity) {
-				lastPollInstant = Instant.now();
 				ClientPlayNetworking.send(new InventoryRequestPayload(blockPosition));
 			} else {
 				CurrentContainerContext.INSTANCE.reset();
