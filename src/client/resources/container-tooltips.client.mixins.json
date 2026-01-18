@@ -3,6 +3,7 @@
   "package": "io.urokhtor.minecraft.containertooltips.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "AttackRangeComponentMixin",
     "ChatHudMixin",
     "PlayerRayCastClientMixin",
     "ScreenMixin"
