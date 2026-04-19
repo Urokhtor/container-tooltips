@@ -1,100 +1,100 @@
 package io.urokhtor.minecraft.containertooltips
 
-import net.minecraft.block.ChestBlock
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity
-import net.minecraft.block.entity.BlockEntity
-import net.minecraft.block.entity.ChestBlockEntity
-import net.minecraft.block.entity.EnderChestBlockEntity
-import net.minecraft.block.entity.LootableContainerBlockEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.Text
-import net.minecraft.util.collection.DefaultedList
-import net.minecraft.util.math.BlockPos
+import net.minecraft.core.BlockPos
+import net.minecraft.core.NonNullList
+import net.minecraft.network.chat.Component
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.block.ChestBlock
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.ChestBlockEntity
+import net.minecraft.world.level.block.entity.EnderChestBlockEntity
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity
 
-fun LootableContainerBlockEntity.hasNotBeenLooted() = this.lootTable != null
+fun RandomizableContainerBlockEntity.hasNotBeenLooted() = this.lootTable != null
 
 class InventoryRequestHandler {
 
     fun createResponse(
-        player: ServerPlayerEntity,
+        player: ServerPlayer,
         blockPosition: BlockPos
     ): InventoryResponsePayload? {
-        return when (val blockEntity: BlockEntity? = player.entityWorld.getBlockEntity(blockPosition)) {
+        return when (val blockEntity: BlockEntity? = player.level().getBlockEntity(blockPosition)) {
             is ChestBlockEntity -> readChestInventory(blockEntity, player)
             is EnderChestBlockEntity -> readEnderChestInventory(player)
-            is LootableContainerBlockEntity -> readGenericInventory(blockEntity)
+            is RandomizableContainerBlockEntity -> readGenericInventory(blockEntity)
             is AbstractFurnaceBlockEntity -> readFurnaceInventory(blockEntity)
             else -> null
         }
     }
 
     /**
-     * Reads contents of a chest container. Double chests are supported by using [ChestBlock.getInventory]. They are
+     * Reads contents of a chest container. Double chests are supported by using [ChestBlock.getContainer]. They are
      * also the reason why [readGenericInventory] does not work for chests, because each side of a double chest has a
      * separate inventory. Without this, the client would get only one half of double chest's inventory.
      */
     private fun readChestInventory(
         blockEntity: ChestBlockEntity,
-        player: ServerPlayerEntity
+        player: ServerPlayer
     ): InventoryResponsePayload? {
         if (blockEntity.hasNotBeenLooted()) {
             return null
         }
 
-        val blockState = blockEntity.cachedState
-        val inventory = ChestBlock.getInventory(
+        val blockState = blockEntity.blockState
+        val inventory = ChestBlock.getContainer(
             blockState.block as ChestBlock,
             blockState,
-            player.entityWorld,
-            blockEntity.pos,
+            player.level(),
+            blockEntity.blockPos,
             true
         )
 
-        val defaultedList = DefaultedList.ofSize(inventory!!.size(), ItemStack.EMPTY)
-        IntRange(0, inventory.size() - 1).forEach { slot ->
-            defaultedList[slot] = inventory.getStack(slot)
+        val items = NonNullList.withSize(inventory!!.count(), ItemStack.EMPTY)
+        IntRange(0, inventory.count() - 1).forEach { slot ->
+            items[slot] = inventory.getItem(slot)
         }
 
         return InventoryResponsePayload(
-            name = blockEntity.displayName.asTruncatedString(32),
-            maxSize = inventory.size(),
-            items = defaultedList
+            name = blockEntity.displayName.getString(32),
+            maxSize = inventory.count(),
+            items = items
         )
     }
 
-    private fun readEnderChestInventory(player: ServerPlayerEntity) = InventoryResponsePayload(
-        name = Text.translatable("container.enderchest").asTruncatedString(32),
-        maxSize = player.enderChestInventory.size(),
-        items = player.enderChestInventory.heldStacks
+    private fun readEnderChestInventory(player: ServerPlayer) = InventoryResponsePayload(
+        name = Component.translatable("container.enderchest").getString(32),
+        maxSize = player.enderChestInventory.count(),
+        items = player.enderChestInventory.items
     )
 
-    private fun readGenericInventory(blockEntity: LootableContainerBlockEntity): InventoryResponsePayload? {
+    private fun readGenericInventory(blockEntity: RandomizableContainerBlockEntity): InventoryResponsePayload? {
         if (blockEntity.hasNotBeenLooted()) {
             return null
         }
 
-        val defaultedList = DefaultedList.ofSize(blockEntity.size(), ItemStack.EMPTY)
-        IntRange(0, blockEntity.size() - 1).forEach { slot ->
-            defaultedList[slot] = blockEntity.getStack(slot)
+        val defaultedList = NonNullList.withSize(blockEntity.count(), ItemStack.EMPTY)
+        IntRange(0, blockEntity.count() - 1).forEach { slot ->
+            defaultedList[slot] = blockEntity.getItem(slot)
         }
 
         return InventoryResponsePayload(
-            name = blockEntity.displayName.asTruncatedString(32),
-            maxSize = blockEntity.size(),
+            name = blockEntity.displayName.getString(32),
+            maxSize = blockEntity.count(),
             items = defaultedList
         )
     }
 
     private fun readFurnaceInventory(blockEntity: AbstractFurnaceBlockEntity): InventoryResponsePayload {
-        val defaultedList = DefaultedList.ofSize(blockEntity.size(), ItemStack.EMPTY)
-        IntRange(0, blockEntity.size() - 1).forEach { slot ->
-            defaultedList[slot] = blockEntity.getStack(slot)
+        val defaultedList = NonNullList.withSize(blockEntity.count(), ItemStack.EMPTY)
+        IntRange(0, blockEntity.count() - 1).forEach { slot ->
+            defaultedList[slot] = blockEntity.getItem(slot)
         }
 
         return InventoryResponsePayload(
-            name = blockEntity.displayName.asTruncatedString(32),
-            maxSize = blockEntity.size(),
+            name = blockEntity.displayName.getString(32),
+            maxSize = blockEntity.count(),
             items = defaultedList
         )
     }

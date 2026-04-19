@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.7+26.1
+
+- Add support for 26.1
+
 ## 1.3.7+1.21.11
 
 - Do not check block position every frame

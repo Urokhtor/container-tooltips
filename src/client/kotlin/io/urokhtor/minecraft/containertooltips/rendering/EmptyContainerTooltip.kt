@@ -1,37 +1,37 @@
 package io.urokhtor.minecraft.containertooltips.rendering
 
 import io.urokhtor.minecraft.containertooltips.Container
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.tooltip.TooltipBackgroundRenderer
-import net.minecraft.text.Text
-import net.minecraft.util.Colors
+import net.minecraft.client.gui.Font
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil
+import net.minecraft.network.chat.Component
+import net.minecraft.util.CommonColors
 
 class EmptyContainerTooltip {
-    fun render(textRenderer: TextRenderer, horizontalCenter: Int, drawContext: DrawContext, container: Container) {
-        TooltipBackgroundRenderer.render(
-            drawContext,
-            horizontalCenter - textRenderer.getWidth(container.name) / 2,
+    fun render(font: Font, horizontalCenter: Int, guiGraphics: GuiGraphicsExtractor, container: Container) {
+        TooltipRenderUtil.extractTooltipBackground(
+            guiGraphics,
+            horizontalCenter - font.width(container.name) / 2,
             Y_START,
-            textRenderer.getWidth(container.name),
-            textRenderer.fontHeight * 2,
+            font.width(container.name),
+            font.lineHeight * 2,
             null
         )
 
-        drawContext.drawText(
-            textRenderer,
+        guiGraphics.text(
+            font,
             container.name,
-            horizontalCenter - textRenderer.getWidth(container.name) / 2,
+            horizontalCenter - font.width(container.name) / 2,
             Y_START,
-            Colors.WHITE,
+            CommonColors.WHITE,
             true
         )
-        drawContext.drawText(
-            textRenderer,
-            Text.translatable("container.empty"),
-            horizontalCenter - textRenderer.getWidth(container.name) / 2,
-            Y_START + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING,
-            Colors.GRAY,
+        guiGraphics.text(
+            font,
+            Component.translatable("container.empty"),
+            horizontalCenter - font.width(container.name) / 2,
+            Y_START + font.lineHeight + TOOLTIP_BACKGROUND_PADDING,
+            CommonColors.GRAY,
             true
         )
     }

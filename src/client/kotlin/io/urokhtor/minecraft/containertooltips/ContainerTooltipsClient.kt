@@ -1,5 +1,6 @@
 package io.urokhtor.minecraft.containertooltips
 
+import com.mojang.blaze3d.platform.InputConstants
 import io.urokhtor.minecraft.containertooltips.configuration.Configuration
 import io.urokhtor.minecraft.containertooltips.rendering.ContainerTooltip
 import io.urokhtor.minecraft.containertooltips.rendering.EmptyContainerTooltip
@@ -8,17 +9,16 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.util.InputUtil
-import net.minecraft.util.ActionResult
-import net.minecraft.util.Identifier
+import net.minecraft.client.Minecraft
+import net.minecraft.resources.Identifier
+import net.minecraft.world.InteractionResult
 
 object ContainerTooltipsClient : ClientModInitializer {
 
 	private val containerTooltip = ContainerTooltip()
 	private val emptyContainerTooltip = EmptyContainerTooltip()
 	private lateinit var configuration: Configuration
-	private val tooltipIdentifier = Identifier.of("container-tooltips", "tooltip")
+	private val tooltipIdentifier = Identifier.fromNamespaceAndPath("container-tooltips", "tooltip")
 	private var screenOpen = false
 
 	override fun onInitializeClient() {
@@ -35,7 +35,7 @@ object ContainerTooltipsClient : ClientModInitializer {
 		configuration = configHolder.config
 		configHolder.registerSaveListener { _, config ->
 			configuration = config
-			ActionResult.PASS
+			InteractionResult.PASS
 		}
 	}
 
@@ -65,17 +65,17 @@ object ContainerTooltipsClient : ClientModInitializer {
 					return@let
 				}
 
-				val client = MinecraftClient.getInstance()
+				val client = Minecraft.getInstance()
 
 				if (container.isEmpty()) {
 					emptyContainerTooltip.render(
-						client.textRenderer,
-						client.window.scaledWidth / 2,
+						client.font,
+						client.window.guiScaledWidth / 2,
 						guiGraphics,
 						container
 					)
 				} else {
-					containerTooltip.render(client.textRenderer, client.window.scaledWidth / 2, guiGraphics, container)
+					containerTooltip.render(client.font, client.window.guiScaledWidth / 2, guiGraphics, container)
 				}
 			}
 		}
@@ -86,5 +86,5 @@ object ContainerTooltipsClient : ClientModInitializer {
 			)
 
 	private fun keyIsNotPressed(keyCode: Int) =
-		!InputUtil.isKeyPressed(MinecraftClient.getInstance().window, keyCode)
+		!InputConstants.isKeyDown(Minecraft.getInstance().window, keyCode)
 }

@@ -1,23 +1,22 @@
 package io.urokhtor.minecraft.containertooltips
 
-import net.minecraft.item.ItemStack
-import net.minecraft.network.RegistryByteBuf
-import net.minecraft.network.codec.PacketCodec
-import net.minecraft.network.packet.CustomPayload
-import net.minecraft.network.packet.CustomPayload.Id
+import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload
+import net.minecraft.world.item.ItemStack
 
-data class InventoryResponsePayload(val name: String, val maxSize: Int, val items: List<ItemStack>) : CustomPayload {
-    override fun getId() = ID
+data class InventoryResponsePayload(val name: String, val maxSize: Int, val items: List<ItemStack>) : CustomPacketPayload {
+    override fun type() = ID
 
     companion object {
-        val ID: Id<InventoryResponsePayload> = CustomPayload.id("container-tooltips/inventory-response")
-        val PACKET_CODEC: PacketCodec<RegistryByteBuf, InventoryResponsePayload> = object:
-            PacketCodec<RegistryByteBuf, InventoryResponsePayload> {
+        val ID: CustomPacketPayload.Type<InventoryResponsePayload> = CustomPacketPayload.createType("container-tooltips/inventory-response")
+        val PACKET_CODEC: StreamCodec<RegistryFriendlyByteBuf, InventoryResponsePayload> = object:
+            StreamCodec<RegistryFriendlyByteBuf, InventoryResponsePayload> {
 
-            override fun decode(buffer: RegistryByteBuf): InventoryResponsePayload {
-                val name = buffer.readString()
+            override fun decode(buffer: RegistryFriendlyByteBuf): InventoryResponsePayload {
+                val name = buffer.readUtf()
                 val maxSize = buffer.readInt()
-                val items = ItemStack.OPTIONAL_LIST_PACKET_CODEC.decode(buffer)
+                val items = ItemStack.OPTIONAL_LIST_STREAM_CODEC.decode(buffer)
 
                 return InventoryResponsePayload(
                     name = name,
@@ -26,11 +25,11 @@ data class InventoryResponsePayload(val name: String, val maxSize: Int, val item
                 )
             }
 
-            override fun encode(buffer: RegistryByteBuf, inventoryResponsePayload: InventoryResponsePayload) {
+            override fun encode(buffer: RegistryFriendlyByteBuf, inventoryResponsePayload: InventoryResponsePayload) {
                 with(inventoryResponsePayload) {
-                    buffer.writeString(name)
+                    buffer.writeUtf(name)
                     buffer.writeInt(maxSize)
-                    ItemStack.OPTIONAL_LIST_PACKET_CODEC.encode(buffer, items)
+                    ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, items)
                 }
             }
         }

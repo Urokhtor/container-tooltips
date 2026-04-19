@@ -1,35 +1,35 @@
 package io.urokhtor.minecraft.containertooltips.rendering
 
 import io.urokhtor.minecraft.containertooltips.Container
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gl.RenderPipelines
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.tooltip.TooltipBackgroundRenderer
-import net.minecraft.util.Colors
+import net.minecraft.client.gui.Font
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil
+import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.util.CommonColors
 import kotlin.math.roundToInt
 
 class ContainerTooltip {
-    fun render(textRenderer: TextRenderer, horizontalCenter: Int, drawContext: DrawContext, container: Container) {
+    fun render(font: Font, horizontalCenter: Int, guiGraphics: GuiGraphicsExtractor, container: Container) {
         val x = horizontalCenter - (getItemsOnOneRow(container) / 2.0 * ITEM_SIZE_X).toInt()
-        TooltipBackgroundRenderer.render(
-            drawContext,
+        TooltipRenderUtil.extractTooltipBackground(
+            guiGraphics,
             x,
             Y_START,
             getWidth(container) + TOOLTIP_BACKGROUND_PADDING,
-            getHeight(container) + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING * 2,
+            getHeight(container) + font.lineHeight + TOOLTIP_BACKGROUND_PADDING * 2,
             null
         )
 
-        drawContext.drawText(textRenderer, container.name, x, Y_START, Colors.WHITE, true)
+        guiGraphics.text(font, container.name, x, Y_START, CommonColors.WHITE, true)
 
-        val backgroundTextureYStart = Y_START + textRenderer.fontHeight + TOOLTIP_BACKGROUND_PADDING
+        val backgroundTextureYStart = Y_START + font.lineHeight + TOOLTIP_BACKGROUND_PADDING
 
-        drawContext.fill(
+        guiGraphics.fill(
             x,
             backgroundTextureYStart,
             x + this.getWidth(container) + TOOLTIP_BACKGROUND_PADDING,
             backgroundTextureYStart + this.getHeight(container) + TOOLTIP_BACKGROUND_PADDING,
-            Colors.LIGHT_GRAY
+            CommonColors.LIGHT_GRAY
         )
 
         container.inventory.chunked(getItemsOnOneRow(container))
@@ -37,7 +37,7 @@ class ContainerTooltip {
                 itemStacks.forEachIndexed { itemIndex, itemStack ->
                     val xOffset = x + itemIndex * ITEM_SIZE_X + TOOLTIP_BACKGROUND_PADDING
                     val yOffset = backgroundTextureYStart + stackIndex * ITEM_SIZE_Y + TOOLTIP_BACKGROUND_PADDING
-                    drawContext.drawGuiTexture(
+                    guiGraphics.blitSprite(
                         RenderPipelines.GUI_TEXTURED,
                         SLOT_TEXTURE,
                         xOffset,
@@ -45,8 +45,8 @@ class ContainerTooltip {
                         ITEM_SIZE_X,
                         ITEM_SIZE_Y
                     )
-                    drawContext.drawItem(itemStack, xOffset + 1, yOffset + 1)
-                    drawContext.drawStackOverlay(textRenderer, itemStack, xOffset + 1, yOffset + 1)
+                    guiGraphics.item(itemStack, xOffset + 1, yOffset + 1)
+                    guiGraphics.itemDecorations(font, itemStack, xOffset + 1, yOffset + 1)
                 }
             }
     }
