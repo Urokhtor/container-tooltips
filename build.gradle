@@ -66,7 +66,7 @@ jar {
 }
 
 modrinth {
-	token = System.getenv("MODRINTH_TOKEN")
+	token = project.findProperty("modrinthToken").toString()
 	projectId = "bec9o8lo"
 	versionNumber = "${project.version}"
 	versionType = "release"
