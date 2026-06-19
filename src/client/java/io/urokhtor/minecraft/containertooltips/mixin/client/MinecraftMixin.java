@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
 
-    @Inject(at = @At("TAIL"), method = "setScreen")
-    private void setScreen(Screen screen, CallbackInfo callbackInfo) {
+    @Inject(at = @At("TAIL"), method = "setScreenAndShow")
+    private void setScreenAndShow(Screen screen, CallbackInfo callbackInfo) {
         if (screen == null) {
             ScreenEventsKt.getSCREEN_CLOSED().invoker().onScreenClosed(Minecraft.getInstance());
         }

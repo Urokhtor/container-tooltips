@@ -72,7 +72,7 @@ modrinth {
 	versionType = "release"
 	changelog = file("changelog/CHANGELOG-${project.version}.md").exists() ? file("changelog/CHANGELOG-${project.version}.md").text : ""
 	uploadFile = jar
-	gameVersions = ["26.1", "26.1.1", "26.1.2"]
+	gameVersions = ["26.2"]
 	loaders = ["fabric"]
 	dependencies {
 		required.project 'P7dR8mSH' // fabric-api
