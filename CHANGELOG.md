@@ -1,5 +1,10 @@
 # Change Log
 
+## 2.0.0+26.3
+
+- Add support for 26.3
+- Add UI for configuring which key shows the tooltip
+
 ## 1.3.7+26.2
 
 - Add support for 26.2
